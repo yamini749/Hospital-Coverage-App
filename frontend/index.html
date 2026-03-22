@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hospital Coverage Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+</head>
+<body>
+
+<h2>Hospital Coverage Map</h2>
+<div id="map" style="height: 500px;"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+var map = L.map('map').setView([17.05, 81.80], 12);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+fetch('http://127.0.0.1:5000/coverage')
+.then(res => res.json())
+.then(data => {
+    data.forEach(area => {
+
+        let color;
+        
+        // 🔥 Priority: Critical zones override color
+        if (area.critical_zone) {
+            color = "purple";  // standout color
+        } else if (area.coverage_status === "Low") {
+            color = "red";
+        } else if (area.coverage_status === "Medium") {
+            color = "orange";
+        } else {
+            color = "green";
+        }
+
+        let circle = L.circle([area.latitude, area.longitude], {
+            color: color,
+            radius: 500
+        }).addTo(map);
+
+        // 🔥 CLICK INTERACTION
+        circle.bindPopup(`
+            <b>${area.area_name}</b><br>
+            Population: ${area.population}<br>
+            Coverage: ${area.coverage_status}<br>
+            Hospitals Nearby: ${area.hospital_count}<br>
+            ${area.critical_zone ? "<b style='color:red;'>⚠ Critical Zone</b>" : ""}
+        `);
+
+        // 🔥 Hover effect (optional but nice)
+        circle.on('mouseover', function () {
+            this.openPopup();
+        });
+
+    });
+});
+</script>
+
+</body>
+</html>
