@@ -9,11 +9,12 @@ CORS(app)
 @app.route('/areas')
 def get_areas():
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor()
 
     try:
         cursor.execute("SELECT * FROM areas")
-        data = cursor.fetchall()
+        rows = cursor.fetchall()
+        data = [dict(row) for row in rows]
     finally:
         conn.close()
 
@@ -24,11 +25,12 @@ def get_areas():
 @app.route('/hospitals')
 def get_hospitals():
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor()
 
     try:
         cursor.execute("SELECT * FROM hospitals")
-        data = cursor.fetchall()
+        rows = cursor.fetchall()
+        data = [dict(row) for row in rows]
     finally:
         conn.close()
 
@@ -39,7 +41,7 @@ def get_hospitals():
 @app.route('/coverage')
 def get_coverage():
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor()
 
     query = """
     SELECT 
@@ -56,7 +58,8 @@ def get_coverage():
 
     try:
         cursor.execute(query)
-        data = cursor.fetchall()
+        rows = cursor.fetchall()
+        data = [dict(row) for row in rows]
 
         # 🔥 SMART INSIGHT: Critical Zones
         for area in data:
@@ -75,7 +78,7 @@ def get_coverage():
 @app.route('/mapping')
 def get_mapping():
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor()
 
     query = """
     SELECT 
@@ -89,7 +92,8 @@ def get_mapping():
 
     try:
         cursor.execute(query)
-        data = cursor.fetchall()
+        rows = cursor.fetchall()
+        data = [dict(row) for row in rows]
     finally:
         conn.close()
 
@@ -100,7 +104,7 @@ def get_mapping():
 @app.route('/roads')
 def get_roads():
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor()
 
     query = """
     SELECT 
@@ -112,7 +116,8 @@ def get_roads():
 
     try:
         cursor.execute(query)
-        data = cursor.fetchall()
+        rows = cursor.fetchall()
+        data = [dict(row) for row in rows]
     finally:
         conn.close()
 

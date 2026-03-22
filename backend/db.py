@@ -1,10 +1,8 @@
-import mysql.connector
+import sqlite3
+import os
 
 def get_db_connection():
-    conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="root",   # change this
-        database="hospital_coverage"
-    )
+    db_path = os.path.join(os.path.dirname(__file__), "database.db")
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
     return conn
