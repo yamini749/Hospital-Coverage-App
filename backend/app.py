@@ -6,6 +6,12 @@ app = Flask(__name__)
 CORS(app)
 
 # 🔹 API 1: Get all areas
+@app.route('/')
+def home():
+    return {
+        "message": "Hospital Coverage API is running",
+        "endpoint": "/coverage"
+    }
 @app.route('/areas')
 def get_areas():
     conn = get_db_connection()
