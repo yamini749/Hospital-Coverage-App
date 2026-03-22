@@ -16,7 +16,8 @@ var map = L.map('map').setView([17.05, 81.80], 12);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-fetch('http://127.0.0.1:5000/coverage')
+//fetch('http://127.0.0.1:5000/coverage')
+fetch('https://hospital-coverage-app.onrender.com/coverage')
 .then(res => res.json())
 .then(data => {
     data.forEach(area => {
